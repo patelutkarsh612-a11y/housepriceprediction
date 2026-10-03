@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>House Price Predictor</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>🏠 House Price Predictor</h1>
+
+        <p class="subtitle">
+            Predict house price using Machine Learning
+        </p>
+
+        <form method="POST">
+
+            <label>Area (sq ft)</label>
+            <input
+                type="number"
+                name="area"
+                placeholder="Example: 1500"
+                required
+            >
+
+            <label>Bedrooms</label>
+            <input
+                type="number"
+                name="bedrooms"
+                placeholder="Example: 3"
+                required
+            >
+
+            <label>Bathrooms</label>
+            <input
+                type="number"
+                name="bathrooms"
+                placeholder="Example: 2"
+                required
+            >
+
+            <label>Parking</label>
+            <input
+                type="number"
+                name="parking"
+                placeholder="Example: 1"
+                required
+            >
+
+            <label>House Age (Years)</label>
+            <input
+                type="number"
+                name="age"
+                placeholder="Example: 5"
+                required
+            >
+
+            <button type="submit">
+                Predict Price
+            </button>
+
+        </form>
+
+
+        {% if prediction is not none %}
+
+        <div class="result">
+
+            <h2>Estimated House Price</h2>
+
+            <div class="price">
+                ₹{{ prediction }} Lakh
+            </div>
+
+            <p>
+                Approximate predicted price
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</body>
+
+</html>
