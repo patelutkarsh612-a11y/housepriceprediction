@@ -1,1 +1,186 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>House Price Predictor</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f4f7f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background: #ffffff;
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            max-width: 450px;
+            width: 100%;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            color: #555;
+            font-weight: 600;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 15px;
+            transition: border-color 0.2s;
+        }
+
+        input[type="number"]:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .result-box {
+            margin-top: 25px;
+            padding: 15px;
+            background-color: #e9f5ff;
+            border-left: 5px solid #007bff;
+            border-radius: 4px;
+            text-align: center;
+            display: none;
+        }
+
+        .result-box h3 {
+            color: #0056b3;
+            font-size: 18px;
+        }
+
+        .result-box p {
+            font-size: 22px;
+            font-weight: bold;
+            color: #222;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>House Price Predictor</h2>
+        <form id="predictionForm">
+            <div class="form-group">
+                <label for="area">Area (sq ft):</label>
+                <input type="number" id="area" step="any" placeholder="e.g. 1500" required>
+            </div>
+
+            <div class="form-group">
+                <label for="bedrooms">Bedrooms:</label>
+                <input type="number" id="bedrooms" step="any" placeholder="e.g. 3" required>
+            </div>
+
+            <div class="form-group">
+                <label for="bathrooms">Bathrooms:</label>
+                <input type="number" id="bathrooms" step="any" placeholder="e.g. 2" required>
+            </div>
+
+            <div class="form-group">
+                <label for="parking">Parking Spaces:</label>
+                <input type="number" id="parking" step="any" placeholder="e.g. 1" required>
+            </div>
+
+            <div class="form-group">
+                <label for="age">Age of Property (years):</label>
+                <input type="number" id="age" step="any" placeholder="e.g. 5" required>
+            </div>
+
+            <button type="submit">Predict Price</button>
+        </form>
+
+        <div class="result-box" id="resultBox">
+            <h3>Estimated Price</h3>
+            <p id="predictedPrice">$0.00</p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('predictionForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Fetch input values
+            const area = parseFloat(document.getElementById('area').value);
+            const bedrooms = parseFloat(document.getElementById('bedrooms').value);
+            const bathrooms = parseFloat(document.getElementById('bathrooms').value);
+            const parking = parseFloat(document.getElementById('parking').value);
+            const age = parseFloat(document.getElementById('age').value);
+
+            // Linear Regression Coefficients
+            // Note: If you train a new model with your dataset, update these coefficients below.
+            const coef_area = 150;      // price change per sq ft
+            const coef_bedrooms = 10000;  // price per bedroom
+            const coef_bathrooms = 15000; // price per bathroom
+            const coef_parking = 5000;   // price per parking space
+            const coef_age = -2000;      // price change per year of age
+            const intercept = 30000;     // base price
+
+            // Formula: y = w1*x1 + w2*x2 + ... + b
+            const price = (area * coef_area) +
+                          (bedrooms * coef_bedrooms) +
+                          (bathrooms * coef_bathrooms) +
+                          (parking * coef_parking) +
+                          (age * coef_age) +
+                          intercept;
+
+            // Display results formatted as currency
+            const resultBox = document.getElementById('resultBox');
+            const priceElement = document.getElementById('predictedPrice');
+            
+            priceElement.innerText = '$' + price.toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+
+            resultBox.style.display = 'block';
+        });
+    </script>
+</body>
+</html>
